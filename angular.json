@@ -62,14 +62,10 @@
           },
           "defaultConfiguration": "development"
         },
-"test": {
-  "builder": "@angular/build:unit-test",
-  "options": {
-    "testPathPattern": "src/app/.*\\.spec\\.(tsx?|ts)",
-    "watch": false,
-    "browsers": [" headless"]
-  }
-}
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {}
+        }
       }
     }
   }

@@ -1,0 +1,24 @@
+<div class="kanban-column">
+  <div class="column-header">
+    <div class="column-info">
+      <h3>{{ title }}</h3>
+      <span class="card-count">{{ count }} cards</span>
+    </div>
+    <button class="add-button">
+      <span class="button-icon">+</span>
+      <span class="button-text">Add Card</span>
+    </button>
+  </div>
+  <div class="column-cards">
+    <app-kanban-card
+      *ngFor="let card of cards"
+      [card]="card"
+      (delete)="onCardDelete(card)">
+    </app-kanban-card>
+    
+    <div class="card-slot-placeholder" *ngIf="cards.length === 0">
+      <div class="placeholder-icon">+</div>
+      <div class="placeholder-text">Drop or click to add</div>
+    </div>
+  </div>
+</div>

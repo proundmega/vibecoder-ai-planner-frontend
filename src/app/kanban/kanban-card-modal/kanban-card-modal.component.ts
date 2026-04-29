@@ -1,0 +1,179 @@
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { KanbanStatus } from '../../kanban.types';
+
+@Component({
+  selector: 'app-kanban-card-modal',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './kanban-card-modal.component.html',
+  styleUrl: './knban-card-modal.component.css',
+  styles: [`
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #999;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+    }
+
+    .close-btn:hover {
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: #444;
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: 10px 12px;
+      border: 2px solid #e1e1e1;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5a6fd6;
+    }
+
+    .btn-secondary {
+      background: #e9ecef;
+      color: #495057;
+    }
+
+    .btn-secondary:hover {
+      background: #dee2e6;
+    }
+  `]
+})
+export class KanbanCardModalComponent {
+  @Input() card: any = null;
+  editingCard: any = null;
+  @Output() save = new EventEmitter<any>();
+  @Output() cancel = new EventEmitter<void>();
+
+  tagsInput: string = '';
+
+  constructor() {}
+
+  get editingCardData(): any {
+    return this.editingCard || {
+      'id': null,
+      'title': '',
+      'description': '',
+      assignee: '',
+      priority: 'medium',
+      status: 'todo',
+      createdAt: new Date() as unknown as string,
+      tags: [],
+    };
+  }
+
+  parseTags(): string[] {
+    return this.tagsInput
+      .split(',')
+      .map((tag: string) => tag.trim())
+      .filter((tag: string) => tag.length > 0);
+  }
+
+  onCancel(): void {
+    this.cancel.emit();
+  }
+
+  onSave(): void {
+    const finalCard = { ...this.editingCardData, tags: this.parseTags() };
+    this.save.emit(finalCard);
+  }
+}

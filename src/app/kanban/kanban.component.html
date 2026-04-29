@@ -1,0 +1,20 @@
+<div class="kanban-container">
+  <div class="page-header">
+    <h1>Kanban Board</h1>
+    <p class="subtitle">Manage tasks across all stages</p>
+  </div>
+  <div class="kanban-board">
+    <app-kanban-column
+      *ngFor="let column of columns"
+      [title]="column.title"
+      [count]="column.count"
+      [cards]="column.cards"
+      (cardDelete)="onCardDeleted($event)">
+    </app-kanban-column>
+  </div>
+  <app-kanban-card-modal
+    [card]="newCard"
+    (save)="saveCard($event)"
+    (cancel)="clearNewCard()">
+  </app-kanban-card-modal>
+</div>

@@ -21,28 +21,30 @@ export class LoginComponent {
   password = '';
   errorMessage = '';
   plans: string[] = ['free', 'pro', 'enterprise'];
+  isLoading = false;
 
   constructor(private http: HttpClient) {}
 
-  login(): void {
+  async login(): Promise<void> {
     this.errorMessage = '';
+    this.isLoading = true;
 
-    this.http.post<User>(
-      '/login',
-      { username: this.username, password: this.password }
-    ).subscribe({
-      next: (response) => {
-        localStorage.setItem('user', JSON.stringify(response));
-        this.errorMessage = '';
-      },
-      error: (error) => {
-        const errorMsg = error.error?.message || 'Login failed';
-        this.errorMessage = errorMsg;
-      },
-    });
+    try {
+      await this.http.post<User>(
+        '/login',
+        { username: this.username, password: this.password }
+      ).toPromise();
+      localStorage.setItem('user', JSON.stringify({ username: this.username, role: 'developer', plan: 'pro' }));
+      this.errorMessage = '';
+    } catch (error) {
+      const errorMsg = (error as any)?.response?.error?.message || 'Login failed';
+      this.errorMessage = errorMsg;
+    } finally {
+      this.isLoading = false;
+    }
   }
 
-  getDisplayPlans(): string[] {
+  async getDisplayPlans(): Promise<string[]> {
     return this.plans;
   }
 }

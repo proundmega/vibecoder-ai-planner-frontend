@@ -1,0 +1,23 @@
+.home-container {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.page-content {
+  max-width: 800px;
+  margin: 60px auto;
+  text-align: center;
+}
+
+.page-content h1 {
+  color: #667eea;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.page-content p {
+  color: #666;
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}

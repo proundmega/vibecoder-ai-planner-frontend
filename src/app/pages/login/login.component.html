@@ -1,9 +1,9 @@
 <div class="login-container">
   <div class="login-box">
-    <h1>Welcome Back</h1>
-    <p class="subtitle">Sign in to your account</p>
-
-    <form (ngSubmit)="login()" class="login-form" [class.error]="">
+    <h1>Vibecode</h1>
+    <p class="subtitle">AI-powered development planner</p>
+    
+    <form class="login-form" (ngSubmit)="login()">
       <div class="form-group">
         <label for="username">Username</label>
         <input
@@ -11,9 +11,8 @@
           type="text"
           [(ngModel)]="username"
           name="username"
+          [required]="true"
           placeholder="Enter your username"
-          required
-          [class.focused]="username.length > 0"
         />
       </div>
 
@@ -24,31 +23,30 @@
           type="password"
           [(ngModel)]="password"
           name="password"
+          [required]="true"
           placeholder="Enter your password"
-          required
-          [class.focused]="password.length > 0"
         />
       </div>
 
-      <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
-
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary" [disabled]="!username || !password || errorMessage">
-          Sign In
-        </button>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
       </div>
 
-      <p class="signup-link">
-        Don't have an account? <a routerLink="/register">Register here</a>
-      </p>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+          {{ isLoading ? 'Logging in...' : 'Login' }}
+        </button>
+      </div>
     </form>
 
     <div class="plans-preview">
-      <h3>Choose your plan</h3>
+      <h3>Plans</h3>
       <div class="plans-grid">
-        <div class="plan-card" *ngFor="let plan of getDisplayPlans()">
-          <h4>{{ plan | uppercase }}</h4>
-          <p>{{ plan === 'free' ? 'Basic features' : plan === 'pro' ? 'Advanced features' : 'All features' }}</p>
+        <div class="plan-card" *ngFor="let plan of plans">
+          {{ plan | titlecase }}
         </div>
       </div>
     </div>

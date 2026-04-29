@@ -1,0 +1,18 @@
+<div class="kanban-card" [class.draggable]="true">
+  <div class="card-content">
+    <div class="card-title">{{ card.title }}</div>
+    <p class="card-description">{{ card.description }}</p>
+  </div>
+  <div class="card-footer">
+    <div class="card-tag priority-{{ card.priority }}">
+      {{ card.priority }}
+    </div>
+    <div class="card-meta">
+      <span class="assignee" *ngIf="card.assignee">{{ card.assignee }}</span>
+      <button class="delete-btn" (click)="delete.emit()">×</button>
+    </div>
+  </div>
+  <div class="card-attachment" *ngIf="card.tags && card.tags.length > 0">
+    <div class="tag">{{ card.tags[0] || 'task' }}</div>
+  </div>
+</div>
